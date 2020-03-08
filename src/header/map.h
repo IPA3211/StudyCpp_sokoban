@@ -17,5 +17,7 @@ public:
 
     void resizeMap(const transform &_ms);
 
+    void swap(const transform &index, const transform &index2);
+
     ~map();
 };
