@@ -1,5 +1,6 @@
 #include "header/map.h"
 #include "header/transform.h"
+#include <sstream>
 
 map::map(){
     map_data = nullptr;
@@ -17,6 +18,17 @@ void map::resizeMap(const transform &_ms){
     for(int i = 0; i < _ms.getX(); i++){
         map_data[i] = new int [_ms.getY()];
     }
+}
+void map::buildMap(const std::string &str, const transform &_ms){
+    resizeMap(_ms);
+    std::stringstream ss;
+    
+    ss.str(str);
+
+    for(int i = 0; i < _ms.getX(); i++){
+        ss.get
+    }
+    
 }
 
 void map::freeMapData(){

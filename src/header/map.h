@@ -1,6 +1,7 @@
 #pragma once
 
 #include "transform.h"
+#include <string>
 
 typedef int** data;
 
@@ -16,6 +17,7 @@ public:
     void freeMapData();
 
     void resizeMap(const transform &_ms);
+    void buildMap(const std::string &str, const transform &_ms);
 
     void swap(const transform &index, const transform &index2);
 
