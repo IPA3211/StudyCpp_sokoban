@@ -23,7 +23,9 @@ std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
             std::string str;
             getline(file, str);
             if(str.compare(_ruler) == 0 || str.compare("end") == 0){
-                if(!(temp.x == 0 && temp.y == 0)){ // 입력이 있었던 경우
+                if(!(temp.x == 0 && temp.y == 0)){ 
+                    // 입력이 있었던 경우에 만 저장
+                    temp.str.pop_back();
                     strings.push_back(temp);
                 }
 
@@ -33,7 +35,7 @@ std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
                 temp.y = 0;
             }  
             else{
-                temp.str = temp.str + "\n" + str;
+                temp.str = temp.str + str + "\n";
                 temp.y++;
                 if(temp.x < str.length()){
                     temp.x = str.length();

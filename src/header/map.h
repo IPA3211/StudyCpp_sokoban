@@ -13,11 +13,16 @@ private:
 public:
     map();
     map(const transform &_ms);
+    map(const std::string &_data, const transform &_ms);
+
+
 
     void freeMapData();
 
     void resizeMap(const transform &_ms);
     void buildMap(const std::string &str, const transform &_ms);
+
+    void showMap();
 
     void swap(const transform &index, const transform &index2);
 
