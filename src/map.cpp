@@ -1,5 +1,6 @@
 #include "header/map.h"
 #include "header/transform.h"
+#include "header/charactor.h"
 #include <sstream>
 #include <iostream>
 
@@ -14,10 +15,6 @@ map::map(const transform &_ms){
 
 map::map(const std::string &_data, const transform &_ms){
     resizeMap(_ms);
-    std::stringstream ss;
-
-    ss.str(_data);
-
     int row = 0;
     int col = 0;
     char temp;
@@ -30,6 +27,9 @@ map::map(const std::string &_data, const transform &_ms){
             col = 0;
         }
         else{
+            if(temp == '@'){
+                player = new charactor(transform(row, col));
+            }
             map_data[row][col] = temp;
             col ++;
         }
@@ -62,10 +62,10 @@ void map::buildMap(const std::string &str, const transform &_ms){
 void map::showMap(){
     for(int i = 0; i < map_size.getY(); i++){
         for(int j = 0; j < map_size.getX(); j++){
-            if(map_data[i][j] == 'O' + '@'){
+            if(map_data[i][j] == '@' + 1){
                 std::cout << '@';
             }
-            else if(map_data[i][j] == '$' + 'O'){
+            else if(map_data[i][j] == '$' + 1){
                 std::cout << '$';
             }
             else
@@ -90,7 +90,7 @@ bool map::isCanSwap(const transform &_index, const transform &_direction){
     const int x2 = index2.getX();
     const int y2 = index2.getY();
 
-    if(map_data[x1][y1] == '@' || map_data[x1][y1] == '@' + 'O'){
+    if(map_data[x1][y1] == '@' || map_data[x1][y1] == '@' + 1){
         if(map_data[x2][y2] == ' '){
             swap(_index, index2);
             return true;
@@ -99,20 +99,20 @@ bool map::isCanSwap(const transform &_index, const transform &_direction){
             swap(_index, index2);
             return true;
         }
-        else if(map_data[x2][y2] == '$' || map_data[x2][y2] == '$' + 'O') {// $
+        else if(map_data[x2][y2] == '$' || map_data[x2][y2] == '$' + 1) {// $
             if(isCanSwap(index2, _direction)){
                 swap(_index, index2);
                 return true;
             }
             else 
-                return;
+                return false;
         }
         else{
             return false;
         }
     }
 
-    if(map_data[x1][y1] == '$'|| map_data[x2][y2] == '$' + 'O'){ // $
+    if(map_data[x1][y1] == '$'|| map_data[x1][y1] == '$' + 1){ // $
         if(map_data[x2][y2] == ' '){
             swap(_index, index2);
             return true;
@@ -126,8 +126,79 @@ bool map::isCanSwap(const transform &_index, const transform &_direction){
     }
 }
 
-void map::swap(const transform &index, const transform &index2){
+void map::swap(const transform &_index, const transform &_index2){
+    
+    const int x1 = _index.getX();
+    const int y1 = _index.getY();
 
+    const int x2 = _index2.getX();
+    const int y2 = _index2.getY();
+    
+    if(getDataInfo(_index) == '$' + 1){
+        //' $O'
+        if(getDataInfo(_index2) == 'O'){
+            //' O$'
+            std::swap(map_data[x1][y1], map_data[x2][y2]);
+        }
+        else{
+            //'$OO'
+            map_data[x1][y1] = 'O';
+            map_data[x2][y2] = '$';
+        }
+    }
+    else if(getDataInfo(_index) == '$'){
+        //' $O'
+        if(getDataInfo(_index2) == 'O'){
+            //'  $'
+            map_data[x1][y1] = ' ';
+            map_data[x2][y2] = '$'+1;
+        }
+        else{
+            //'$ O'
+            std::swap(map_data[x1][y1], map_data[x2][y2]);
+        }
+    }  
+    else if(getDataInfo(_index) == '@' + 1){
+        //' @O'
+        if(getDataInfo(_index2) == 'O'){
+            //' O@'
+            std::swap(map_data[x1][y1], map_data[x2][y2]);
+        }
+        else{
+            //'@OO'
+            map_data[x1][y1] = 'O';
+            map_data[x2][y2] = '@';
+        }
+    }
+    else if(getDataInfo(_index) == '@'){
+        //' @O'
+        if(getDataInfo(_index2) == 'O'){
+            //'  @'
+            
+            map_data[x1][y1] = ' ';
+            map_data[x2][y2] = '@'+1;
+        }
+        else{
+            //'@ O'
+            std::swap(map_data[x1][y1], map_data[x2][y2]);
+        }
+    }  
+    else if(getDataInfo(_index) == '$'){
+        //' $O'
+        if(getDataInfo(_index2) == 'O'){
+            //'  @'
+            
+            map_data[x1][y1] = ' ';
+            map_data[x2][y2] = '$'+1;
+        }
+        else{
+            //'$ O'
+            std::swap(map_data[x1][y1], map_data[x2][y2]);
+        }
+    }      
+}
+charactor * map::getPlayer(){
+    return player;
 }
 
 void map::freeMapData(){
@@ -140,6 +211,9 @@ void map::freeMapData(){
     map_data = nullptr;
 
     map_size = transform(0, 0);
+
+    delete player;
+    player = nullptr;
 }
 
 map::~map(){

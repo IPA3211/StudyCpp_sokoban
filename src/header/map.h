@@ -11,11 +11,14 @@
 
 typedef char** data;
 
+class charactor;
+
 class map
 {
 private:
     data map_data = nullptr;
     transform map_size;
+    charactor *player = nullptr;
 
 public:
     map();
@@ -33,8 +36,10 @@ public:
 
     char getDataInfo(const transform &_position);
     
-    bool isCanSwap(const transform &index, const transform &index2);
+    bool isCanSwap(const transform &index, const transform &direction);
     void swap(const transform &index, const transform &index2);
+
+    charactor * getPlayer();
 
     ~map();
 };

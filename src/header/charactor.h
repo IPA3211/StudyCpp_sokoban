@@ -1,19 +1,22 @@
 #pragma once
 
+#include "map.h"
 #include "transform.h"
-#include "header/map.h"
+
+class map;
 
 class charactor
 {
 private:
     transform position;
-    map m;
     
 public:
+    charactor();
     charactor(const transform &_pos);
 
-    void move(const char &_input);
-    bool isCanMove(const transform &index, const transform &_direction, bool isPlayer);
+    void changePosition(const transform &_pos);
+
+    void move(const char &_input, map &m);
 
     ~charactor();
 };
