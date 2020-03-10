@@ -1,15 +1,22 @@
 #pragma once
 
 #include "transform.h"
+#include "charactor.h"
 #include <string>
+#include <vector>
 
-typedef int** data;
+// # = 벽, $ = 박스, @ = player, O = goal,
+// O + @ =  player on goal = @
+// O + $ =  box on goal = $
+
+typedef char** data;
 
 class map
 {
 private:
     data map_data = nullptr;
     transform map_size;
+
 public:
     map();
     map(const transform &_ms);
@@ -24,6 +31,9 @@ public:
 
     void showMap();
 
+    char getDataInfo(const transform &_position);
+    
+    bool isCanSwap(const transform &index, const transform &index2);
     void swap(const transform &index, const transform &index2);
 
     ~map();

@@ -43,9 +43,9 @@ void map::resizeMap(const transform &_ms){
 
     map_size = _ms;
 
-    map_data = new int *[_ms.getY()];
+    map_data = new char *[_ms.getY()];
     for(int i = 0; i < _ms.getY(); i++){
-        map_data[i] = new int [_ms.getX()];
+        map_data[i] = new char [_ms.getX()];
     }
 
     for(int i = 0; i < _ms.getY(); i++){
@@ -62,10 +62,72 @@ void map::buildMap(const std::string &str, const transform &_ms){
 void map::showMap(){
     for(int i = 0; i < map_size.getY(); i++){
         for(int j = 0; j < map_size.getX(); j++){
-            std::cout << static_cast<char>(map_data[i][j]);
+            if(map_data[i][j] == 'O' + '@'){
+                std::cout << '@';
+            }
+            else if(map_data[i][j] == '$' + 'O'){
+                std::cout << '$';
+            }
+            else
+                std::cout << map_data[i][j];
         }
         std::cout << std::endl;
     }
+}
+
+char map::getDataInfo(const transform &_position){
+    return map_data[_position.getX()][_position.getY()];
+}
+
+bool map::isCanSwap(const transform &_index, const transform &_direction){
+    transform index2 = _index;
+
+    index2 = index2 + _direction;
+
+    const int x1 = _index.getX();
+    const int y1 = _index.getY();
+
+    const int x2 = index2.getX();
+    const int y2 = index2.getY();
+
+    if(map_data[x1][y1] == '@' || map_data[x1][y1] == '@' + 'O'){
+        if(map_data[x2][y2] == ' '){
+            swap(_index, index2);
+            return true;
+        }
+        else if(map_data[x2][y2] == 'O'){
+            swap(_index, index2);
+            return true;
+        }
+        else if(map_data[x2][y2] == '$' || map_data[x2][y2] == '$' + 'O') {// $
+            if(isCanSwap(index2, _direction)){
+                swap(_index, index2);
+                return true;
+            }
+            else 
+                return;
+        }
+        else{
+            return false;
+        }
+    }
+
+    if(map_data[x1][y1] == '$'|| map_data[x2][y2] == '$' + 'O'){ // $
+        if(map_data[x2][y2] == ' '){
+            swap(_index, index2);
+            return true;
+        }
+        else if(map_data[x2][y2] == 'O'){
+            swap(_index, index2);
+            return true;
+        }
+        else 
+            return false;
+    }
+}
+
+void map::swap(const transform &index, const transform &index2){
+
 }
 
 void map::freeMapData(){
