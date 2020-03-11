@@ -56,7 +56,27 @@ void map::resizeMap(const transform &_ms){
 }
 
 void map::buildMap(const std::string &str, const transform &_ms){
-    map(str, _ms);
+    resizeMap(_ms);
+    int row = 0;
+    int col = 0;
+    char temp;
+
+    for(int i = 0; i < str.length(); i++){
+        temp = str.at(i);
+
+        if(temp == '\n'){
+            row++;
+            col = 0;
+        }
+        else{
+            if(temp == '@'){
+                player = new charactor(transform(row, col));
+            }
+            map_data[row][col] = temp;
+            col ++;
+        }
+        
+    }
 }
 
 void map::showMap(){

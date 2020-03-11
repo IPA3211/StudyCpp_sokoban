@@ -19,10 +19,8 @@ gameCore::gameCore(){
     }
     
     stage = 0;
-    
-    stages.at(0).showMap();
 
-    playingMap = &stages.at(stage);
+    playingMap = new map();
     player = playingMap -> getPlayer();
 }
 
@@ -220,7 +218,7 @@ const char & gameCore::showGamePauseUI(){
 }
 
 void gameCore::gameCoreFree(){
-    delete playingMap;
+    //delete playingMap;
     delete player;
 
     playingMap = nullptr;
