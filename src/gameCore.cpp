@@ -1,6 +1,8 @@
 #include <iostream>
+#include <sstream>
 #include <termios.h>
 #include <unistd.h>
+#include <thread>
 
 #include "header/gameCore.h"
 #include "header/transform.h"
@@ -13,10 +15,9 @@ gameCore::gameCore(){
     stages = file.filetrimByline("map");
     
     stage = 0;
-    
-    playingMap = new map(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
-    playingMap ->showMap();
-    player = playingMap -> getPlayer();
+    playTime = 0;
+
+    playingMap = new map();
 }
 
 void gameCore::ChangeInputType(bool type){
@@ -36,7 +37,9 @@ void gameCore::ChangeInputType(bool type){
 
 void gameCore::drawGameView(){
     system("clear");
+    std::cout << "STAGE " << stage + 1 << std::endl;
     playingMap -> showMap();
+    std::cout << "\t" << playTime / 10 << "." << playTime % 10;
 }
 
 bool gameCore::gameInput(){
@@ -62,24 +65,23 @@ bool gameCore::gameInput(){
         break;
 
     case 27:
+        timer_th->detach();
         bool flag = true;
         while(flag){
             switch (showGamePauseUI())
             {
             case '1':
+                timer_th->join();
                 flag = false;
                 break;
             case '2':
                 saveGame();
-                getchar();
                 break;
             case '3':
                 loadGame();
-                getchar();
                 break;
             case '4':
                 showReadMe();
-                getchar();
                 break;
             case '5':
                 return false; // game out
@@ -95,25 +97,30 @@ bool gameCore::gameInput(){
     return true;
 }
 
+void gameCore::timer(){
+    sleep(100);
+    //drawGameView();
+}
+
 void gameCore::start(){
+    timer_th = new std::thread(timer);
     while(true){
         switch (showGameStartUI())
         {
         case '1':
+            timer_th->join();
             startNewGame();
-            getchar();
+            return;
             break;
         case '2':
             loadGame();
-            getchar();
+            return;
             break;
         case '3':
             showRanking();
-            getchar();
             break;
         case '4':
             showReadMe();
-            getchar();
             break;
         case '5':
             return;
@@ -127,8 +134,9 @@ void gameCore::start(){
 }
 
 bool gameCore::update(){
+    do{
     drawGameView();
-    return gameInput();
+    }while(gameInput());
 }
 
 void gameCore::restrat(){
@@ -139,20 +147,53 @@ void gameCore::restrat(){
 void gameCore::undo(){}
 
 void gameCore::startNewGame(){
-    while (update());
-    
+    stage = 0;
+
+    playingMap -> buildMap(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
+    playingMap -> showMap();
+    player = playingMap -> getPlayer();
+
+    update();
 }
-bool gameCore::saveGame(){}
-bool gameCore::loadGame(){}
+
+bool gameCore::saveGame(){
+    gameSaveDatas s;
+
+    s.map = playingMap -> map2String();
+    s.stage = stage;
+    s.time = 0;
+
+    if(fileio::saveGame("save" , s)){
+        system("clear");
+        std::cout<< "저장 완료" << std::endl;
+        std::cin.ignore();
+        std::cin.get();
+    }
+}
+bool gameCore::loadGame(){
+    fileio io("save",  mode::IN);
+    std::vector<trimedStirng> load;
+    load = io.filetrimByline("map");
+
+    playingMap -> buildMap(load.at(0).str, transform(load.at(0).x, load.at(0).y));
+    player = playingMap -> getPlayer();
+
+    std::istringstream iss(load.at(1).str);
+
+    iss >> stage >> playTime;
+
+    update();
+}
+
 bool gameCore::showRanking(){
 }
+
 bool gameCore::showReadMe(){
-    std::cout << "ss" << std::endl;
+    system("clear");
     fileio::showFile("src/data/help.txt");
-    std::cin;
+    std::cin.ignore();
+    std::cin.get();
 }
-
-
 
 char gameCore::showGameStartUI() {
     system("clear");
@@ -227,11 +268,13 @@ char gameCore::showGamePauseUI(){
 }
 
 void gameCore::gameCoreFree(){
-    //delete playingMap;
+    delete playingMap;
     delete player;
+    delete timer_th;
 
     playingMap = nullptr;
     player = nullptr;
+    timer_th = nullptr;
 
     stages.clear();
 }

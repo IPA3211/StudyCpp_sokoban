@@ -80,19 +80,29 @@ void map::buildMap(const std::string &str, const transform &_ms){
 }
 
 void map::showMap(){
+    std::cout << map2String();
+}
+
+std::string map::map2String(){
+    std::string s;
+    
+    s.reserve(map_size.getX() * map_size.getY());
+
     for(int i = 0; i < map_size.getY(); i++){
         for(int j = 0; j < map_size.getX(); j++){
             if(map_data[i][j] == '@' + 1){
-                std::cout << '@';
+                s.push_back('@');
             }
             else if(map_data[i][j] == '$' + 1){
-                std::cout << '$';
+                s.push_back('$');
             }
             else
-                std::cout << map_data[i][j];
+                s.push_back(map_data[i][j]);
         }
-        std::cout << std::endl;
+        s.push_back('\n');
     }
+
+    return s;
 }
 
 char map::getDataInfo(const transform &_position){

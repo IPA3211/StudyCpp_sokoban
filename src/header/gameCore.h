@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <thread>
 #include "map.h"
 #include "charactor.h"
 #include "fileio.h"
@@ -10,7 +11,8 @@ private:
     std::vector<trimedStirng> stages;
     map* playingMap;
     charactor* player = nullptr;
-    int stage;
+    std::thread* timer_th;
+    int stage, playTime;
     
 public:
     gameCore(/* args */);
@@ -21,6 +23,7 @@ public:
                                      // false   : default setting
     void drawGameView();
     bool gameInput(); // return false is end game;
+    void static timer();
 
     //GAME FLOWs
     void start(); // game start

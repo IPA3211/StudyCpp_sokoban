@@ -14,6 +14,12 @@ struct trimedStirng
     std::string str;
 };
 
+struct gameSaveDatas{
+    int stage;
+    int time;
+    std::string map;
+};
+
 
 
 class fileio
@@ -26,8 +32,10 @@ public:
     fileio(char * _fileName, mode _type);
 
     static void showFile(char * _fileName);
+    static bool saveGame(char * _fileName, const gameSaveDatas &data);
 
     std::vector<trimedStirng> filetrimByline(const std::string &_ruler);
+    
 
     ~fileio();
 };

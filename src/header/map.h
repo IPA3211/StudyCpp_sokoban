@@ -33,6 +33,7 @@ public:
     void buildMap(const std::string &str, const transform &_ms);
 
     void showMap();
+    std::string map2String();
 
     char getDataInfo(const transform &_position);
     
