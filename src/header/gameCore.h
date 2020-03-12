@@ -7,8 +7,7 @@
 class gameCore
 {
 private:
-    std::vector<trimedStirng> a;
-    std::vector<map> stages;
+    std::vector<trimedStirng> stages;
     map* playingMap;
     charactor* player = nullptr;
     int stage;
@@ -37,8 +36,8 @@ public:
     bool showReadMe();
 
     //GAME UIs
-    const char & showGameStartUI();
-    const char & showGamePauseUI();
+    char showGameStartUI();
+    char showGamePauseUI();
 
     //CLASS UTILITYs
     void gameCoreFree();

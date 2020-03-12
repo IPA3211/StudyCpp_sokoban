@@ -13,6 +13,16 @@ fileio::fileio(char * _fileName, mode _type){
         std::cout<<"fail"<<std::endl;
 
 }
+void fileio::showFile(char * _fileName){
+    std::ifstream f;
+    std::string s;
+    f.open(_fileName);
+    
+    f >> s;
+    
+    std::cout << s << std::endl;
+    f.close();
+}
 
 std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
     std::vector<trimedStirng> strings;

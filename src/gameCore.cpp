@@ -8,19 +8,14 @@
 #include "header/map.h"
 
 gameCore::gameCore(){
-    fileio file("bin/map.txt", mode::IN);
+    fileio file("src/data/map.txt", mode::IN);
 
-    a = file.filetrimByline("map");
-    
-    stages.resize(a.size());
-
-    for(int i = 0; i < a.size(); i++){
-        stages.at(i).buildMap(a.at(i).str, transform(a.at(i).x, a.at(i).y));
-    }
+    stages = file.filetrimByline("map");
     
     stage = 0;
-
-    playingMap = new map();
+    
+    playingMap = new map(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
+    playingMap ->showMap();
     player = playingMap -> getPlayer();
 }
 
@@ -67,29 +62,33 @@ bool gameCore::gameInput(){
         break;
 
     case 27:
-        switch (showGamePauseUI())
-        {
-        case 1:
-            break;
-        case 2:
-            saveGame();
-            break;
-        case 3:
-            loadGame();
-            break;
-        case 4:
-            showReadMe();
-            break;
-        case 5:
-            return false;
-            break;
-        
-        default:
-            break;
+        bool flag = true;
+        while(flag){
+            switch (showGamePauseUI())
+            {
+            case '1':
+                flag = false;
+                break;
+            case '2':
+                saveGame();
+                getchar();
+                break;
+            case '3':
+                loadGame();
+                getchar();
+                break;
+            case '4':
+                showReadMe();
+                getchar();
+                break;
+            case '5':
+                return false; // game out
+                break;
+            
+            default:
+                break;
+            }
         }
-        break;
-
-    default:
         break;
     }
 
@@ -97,28 +96,33 @@ bool gameCore::gameInput(){
 }
 
 void gameCore::start(){
+    while(true){
+        switch (showGameStartUI())
+        {
+        case '1':
+            startNewGame();
+            getchar();
+            break;
+        case '2':
+            loadGame();
+            getchar();
+            break;
+        case '3':
+            showRanking();
+            getchar();
+            break;
+        case '4':
+            showReadMe();
+            getchar();
+            break;
+        case '5':
+            return;
+            break;
 
-    switch (showGameStartUI())
-    {
-    case 1:
-        startNewGame();
-        break;
-    case 2:
-        loadGame();
-        break;
-    case 3:
-        showRanking();
-        break;
-    case 4:
-        showReadMe();
-        break;
-    case 5:
-        return;
-        break;
-    
-    default:
-        
-        break;
+        default:
+            
+            break;
+        }
     }
 }
 
@@ -128,23 +132,29 @@ bool gameCore::update(){
 }
 
 void gameCore::restrat(){
-    playingMap = &stages.at(stage);
+    playingMap->buildMap(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
     player = playingMap -> getPlayer();
 }
 
 void gameCore::undo(){}
 
 void gameCore::startNewGame(){
-    while(update());
+    while (update());
+    
 }
 bool gameCore::saveGame(){}
 bool gameCore::loadGame(){}
-bool gameCore::showRanking(){}
-bool gameCore::showReadMe(){}
+bool gameCore::showRanking(){
+}
+bool gameCore::showReadMe(){
+    std::cout << "ss" << std::endl;
+    fileio::showFile("src/data/help.txt");
+    std::cin;
+}
 
 
 
-const char & gameCore::showGameStartUI() {
+char gameCore::showGameStartUI() {
     system("clear");
     ChangeInputType(false);
 
@@ -156,7 +166,6 @@ const char & gameCore::showGameStartUI() {
 
 
     cout << "SOKOBAN" << endl;
-    stages.at(1).showMap();
 
     cout << "\n메뉴" << endl;
     cout << "1. 새로운 게임" << endl;
@@ -182,7 +191,7 @@ const char & gameCore::showGameStartUI() {
     return in;
 }
 
-const char & gameCore::showGamePauseUI(){
+char gameCore::showGamePauseUI(){
 
     system("clear");
     ChangeInputType(false);

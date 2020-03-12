@@ -25,6 +25,8 @@ private:
 public:
     fileio(char * _fileName, mode _type);
 
+    static void showFile(char * _fileName);
+
     std::vector<trimedStirng> filetrimByline(const std::string &_ruler);
 
     ~fileio();
