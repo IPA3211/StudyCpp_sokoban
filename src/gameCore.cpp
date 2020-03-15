@@ -37,9 +37,10 @@ void gameCore::ChangeInputType(bool type){
 
 void gameCore::drawGameView(){
     system("clear");
-    std::cout << "STAGE " << stage + 1 << std::endl;
-    playingMap -> showMap();
-    std::cout << "\t" << playTime / 10 << "." << playTime % 10;
+    std::cout << "STAGE\t   " << stage + 1<<std::endl;
+   
+    playingMap -> showMap(); 
+    std::cout << playTime / 10 << "." << playTime % 10 << std::endl;
 }
 
 bool gameCore::gameInput(){
@@ -65,13 +66,13 @@ bool gameCore::gameInput(){
         break;
 
     case 27:
-        timer_th->detach();
+        stopTimer();
         bool flag = true;
         while(flag){
             switch (showGamePauseUI())
             {
             case '1':
-                timer_th->join();
+                startTimer();
                 flag = false;
                 break;
             case '2':
@@ -98,17 +99,33 @@ bool gameCore::gameInput(){
 }
 
 void gameCore::timer(){
-    sleep(100);
-    //drawGameView();
+    while(isTimerStart){
+        playTime++;
+        drawGameView();
+        usleep(100 * 1000);
+    }
+}
+
+void gameCore::startTimer(){
+    if(timer_th != nullptr){
+        delete timer_th;
+        timer_th = nullptr;
+    }
+
+    isTimerStart = true;
+    timer_th = new std::thread(&gameCore::timer, this);
+    timer_th -> detach();
+}
+
+void gameCore::stopTimer(){
+    isTimerStart = false;
 }
 
 void gameCore::start(){
-    timer_th = new std::thread(timer);
     while(true){
         switch (showGameStartUI())
         {
         case '1':
-            timer_th->join();
             startNewGame();
             return;
             break;
@@ -153,6 +170,7 @@ void gameCore::startNewGame(){
     playingMap -> showMap();
     player = playingMap -> getPlayer();
 
+    startTimer();
     update();
 }
 
@@ -182,6 +200,7 @@ bool gameCore::loadGame(){
 
     iss >> stage >> playTime;
 
+    startTimer();
     update();
 }
 

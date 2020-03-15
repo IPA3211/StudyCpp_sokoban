@@ -11,7 +11,10 @@ private:
     std::vector<trimedStirng> stages;
     map* playingMap;
     charactor* player = nullptr;
-    std::thread* timer_th;
+    std::thread* timer_th = nullptr;
+    std::thread::native_handle_type tt;
+
+    bool isTimerStart = false;
     int stage, playTime;
     
 public:
@@ -23,7 +26,10 @@ public:
                                      // false   : default setting
     void drawGameView();
     bool gameInput(); // return false is end game;
-    void static timer();
+    void timer();
+
+    void startTimer();
+    void stopTimer();
 
     //GAME FLOWs
     void start(); // game start
