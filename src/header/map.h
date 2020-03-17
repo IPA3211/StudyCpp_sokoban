@@ -39,6 +39,8 @@ public:
     
     bool isCanSwap(const transform &index, const transform &direction);
     void swap(const transform &index, const transform &index2);
+    void hardSwap(const transform &index, const transform &index2);
+
 
     charactor * getPlayer();
 

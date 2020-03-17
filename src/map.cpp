@@ -225,8 +225,20 @@ void map::swap(const transform &_index, const transform &_index2){
             //'$ O'
             std::swap(map_data[x1][y1], map_data[x2][y2]);
         }
-    }      
+    }
 }
+
+void map::hardSwap(const transform &_index, const transform &_index2){
+
+    const int x1 = _index.getX();
+    const int y1 = _index.getY();
+
+    const int x2 = _index2.getX();
+    const int y2 = _index2.getY();
+
+    std::swap(map_data[x1][y1], map_data[x2][y2]);
+}
+
 charactor * map::getPlayer(){
     return player;
 }

@@ -36,7 +36,7 @@ void gameCore::ChangeInputType(bool type){
 }
 
 void gameCore::drawGameView(){
-    system("clear");
+    //system("clear");
     std::cout << "STAGE\t   " << stage + 1<<std::endl;
    
     playingMap -> showMap(); 
@@ -62,7 +62,7 @@ bool gameCore::gameInput(){
         restrat();
         break;
     case 'u':
-        undo();
+        player -> undo(*playingMap);
         break;
 
     case 27:
@@ -101,7 +101,7 @@ bool gameCore::gameInput(){
 void gameCore::timer(){
     while(isTimerStart){
         playTime++;
-        drawGameView();
+        //drawGameView();
         usleep(100 * 1000);
     }
 }
@@ -161,7 +161,8 @@ void gameCore::restrat(){
     player = playingMap -> getPlayer();
 }
 
-void gameCore::undo(){}
+void gameCore::undo(){
+}
 
 void gameCore::startNewGame(){
     stage = 0;
