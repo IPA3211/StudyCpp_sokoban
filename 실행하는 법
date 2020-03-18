@@ -1,4 +1,4 @@
 터미널에 아래와 같이 입력
 g++ $(find ~/workspace/Study/src -name *.cpp) -o ~/workspace/Study/bin//main -g -std=c++17 -lm && ~/workspace/Study/bin//main
 
-g++ $(find ./src -name *.cpp) -o ./bin//main -g -std=c++17 -lm && ./bin//main
+g++ $(find ./src -name *.cpp) -pthread -o ./bin//main -g -std=c++17 -lm && ./bin//main

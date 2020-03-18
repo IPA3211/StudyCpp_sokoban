@@ -38,7 +38,8 @@ public:
     //GAME SYSTEMs
     void restrat();
     void undo();
-    void startNewGame();
+    void startNewGame(const bool &isLoadGame);
+    void loadStage(const int &_stage);
     bool saveGame();
     bool loadGame();
     bool showRanking();

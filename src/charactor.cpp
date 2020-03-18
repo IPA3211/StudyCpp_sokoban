@@ -16,7 +16,7 @@ void charactor::changePosition(const transform &_pos){
     std::cout << position.getX() << " " << position.getY() << std::endl;
 }
 
-void charactor::move(const char &_input, map &m){
+bool charactor::move(const char &_input, map &m){
     bool is$Moved = false;
     switch (_input)
     {
@@ -48,6 +48,8 @@ void charactor::move(const char &_input, map &m){
     default:
         break;
     }
+
+    return is$Moved;
 }
 
 void charactor::saveUndo(const transform &_dir, const bool &_isMoved){
@@ -66,19 +68,28 @@ void charactor::saveUndo(const transform &_dir, const bool &_isMoved){
 
 }
 
+std::vector<undo_data_form> & charactor::getUndo(){
+    return undo_data;
+}
+
+void charactor::setUndo(const std::vector<undo_data_form> & _undo){
+    undo_data = _undo;
+}
+
 void charactor::undo(map &m){
+    bool b;
     if(undo_data.size() > 0){
         transform temp = undo_data.back().dir;
 
-        if(m.isCanSwap(position, transform(0,0) - temp)){
+        if(m.isCanSwap(position, transform(0,0) - temp, b)){
+
+            if(undo_data.back().is$moved){
+                m.isCanSwap(position + temp, transform(0,0) - temp, b);
+                std::cout << "is $ so swap" << std::endl;
+            }
+
             changePosition(position - temp);
         }
-
-        if(undo_data.back().is$moved){
-            m.isCanSwap(position + temp, transform(0,0) - temp);
-            std::cout << "is $ so swap" << std::endl;
-        }
-
         std::cout << temp.getX() << " " << temp.getY() <<std::endl;
 
         undo_data.pop_back();

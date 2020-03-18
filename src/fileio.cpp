@@ -46,6 +46,15 @@ bool fileio::saveGame(char * _fileName, const gameSaveDatas &data){
     f << data.map;
     f << "map\n";
 
+    for(int i = 0; i < data.undo.size(); i++){
+
+        f << "undo\n";
+        f << data.undo.at(i).dir.getX() << " ";
+        f << data.undo.at(i).dir.getY() << " ";
+        f << data.undo.at(i).is$moved << "\n";
+    }
+    f << "undo\n";
+
     f << data.stage << " ";
     f << data.time;
     f << std::endl;
@@ -59,6 +68,8 @@ bool fileio::saveGame(char * _fileName, const gameSaveDatas &data){
 std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
     std::vector<trimedStirng> strings;
     trimedStirng temp;
+
+    file.seekg(std::ios::beg);
 
     if(file.is_open()){
         while(!file.eof()){

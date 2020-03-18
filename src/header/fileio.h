@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include "charactor.h"
 
 enum class mode {
     IN,
@@ -18,6 +19,7 @@ struct gameSaveDatas{
     int stage;
     int time;
     std::string map;
+    std::vector<undo_data_form> undo;
 };
 
 

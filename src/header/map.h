@@ -37,9 +37,11 @@ public:
 
     char getDataInfo(const transform &_position);
     
-    bool isCanSwap(const transform &index, const transform &direction, bool is$moved = false);
+    bool isCanSwap(const transform &index, const transform &direction, bool &is$moved);
     void swap(const transform &index, const transform &index2);
     void hardSwap(const transform &index, const transform &index2);
+
+    bool clearCheck();
 
 
     charactor * getPlayer();

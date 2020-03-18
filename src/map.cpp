@@ -109,7 +109,7 @@ char map::getDataInfo(const transform &_position){
     return map_data[_position.getX()][_position.getY()];
 }
 
-bool map::isCanSwap(const transform &_index, const transform &_direction, bool is$moved){
+bool map::isCanSwap(const transform &_index, const transform &_direction, bool &is$moved){
     transform index2 = _index;
 
     index2 = index2 + _direction;
@@ -132,7 +132,7 @@ bool map::isCanSwap(const transform &_index, const transform &_direction, bool i
             return true;
         }
         else if(map_data[x2][y2] == '$' || map_data[x2][y2] == '$' + 1) {// $
-            if(isCanSwap(index2, _direction)){
+            if(isCanSwap(index2, _direction, is$moved)){
                 is$moved = true;
                 swap(_index, index2);
                 return true;
@@ -240,6 +240,18 @@ void map::hardSwap(const transform &_index, const transform &_index2){
     const int y2 = _index2.getY();
 
     std::swap(map_data[x1][y1], map_data[x2][y2]);
+}
+
+bool map::clearCheck(){
+    for(int i = 0; i < map_size.getY(); i++){
+        for(int j = 0; j < map_size.getX(); j++){
+            if(map_data[i][j] == 'O' || map_data[i][j] == '@' + 1){
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 charactor * map::getPlayer(){

@@ -5,6 +5,7 @@
 #include <thread>
 
 #include "header/gameCore.h"
+#include "header/charactor.h"
 #include "header/transform.h"
 #include "header/fileio.h"
 #include "header/map.h"
@@ -36,7 +37,7 @@ void gameCore::ChangeInputType(bool type){
 }
 
 void gameCore::drawGameView(){
-    //system("clear");
+    system("clear");
     std::cout << "STAGE\t   " << stage + 1<<std::endl;
    
     playingMap -> showMap(); 
@@ -55,7 +56,19 @@ bool gameCore::gameInput(){
     case 'a':
     case 's':
     case 'd':
-        player -> move(input, *playingMap);
+        if (player -> move(input, *playingMap)){
+            if(playingMap -> clearCheck()){
+                if(stage < stages.size()){
+                    stage++;
+                    loadStage(stage);
+                }
+                else{
+                    system("clear");
+                    std::cout << "clear !!" << std::endl;
+                    return false;
+                }
+            }
+        }
         break;
 
     case 'r':
@@ -80,6 +93,8 @@ bool gameCore::gameInput(){
                 break;
             case '3':
                 loadGame();
+                startTimer();
+                flag = false;
                 break;
             case '4':
                 showReadMe();
@@ -101,7 +116,7 @@ bool gameCore::gameInput(){
 void gameCore::timer(){
     while(isTimerStart){
         playTime++;
-        //drawGameView();
+        drawGameView();
         usleep(100 * 1000);
     }
 }
@@ -126,11 +141,11 @@ void gameCore::start(){
         switch (showGameStartUI())
         {
         case '1':
-            startNewGame();
+            startNewGame(false);
             return;
             break;
         case '2':
-            loadGame();
+            startNewGame(true);
             return;
             break;
         case '3':
@@ -161,18 +176,25 @@ void gameCore::restrat(){
     player = playingMap -> getPlayer();
 }
 
-void gameCore::undo(){
+void gameCore::startNewGame(const bool &isLoadGame){
+    
+    if(isLoadGame){
+        loadGame();
+    }
+    else{
+        loadStage(0);
+    }
+
+    startTimer();
+    update();
 }
 
-void gameCore::startNewGame(){
-    stage = 0;
+void gameCore::loadStage(const int &_stage){
+    stage = _stage;
 
     playingMap -> buildMap(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
     playingMap -> showMap();
     player = playingMap -> getPlayer();
-
-    startTimer();
-    update();
 }
 
 bool gameCore::saveGame(){
@@ -180,7 +202,8 @@ bool gameCore::saveGame(){
 
     s.map = playingMap -> map2String();
     s.stage = stage;
-    s.time = 0;
+    s.time = playTime;
+    s.undo = player -> getUndo();
 
     if(fileio::saveGame("save" , s)){
         system("clear");
@@ -189,20 +212,35 @@ bool gameCore::saveGame(){
         std::cin.get();
     }
 }
+
 bool gameCore::loadGame(){
     fileio io("save",  mode::IN);
-    std::vector<trimedStirng> load;
-    load = io.filetrimByline("map");
+    std::vector<trimedStirng> trim1, trim2;
+    std::vector<undo_data_form> undo_data;
+    trim1 = io.filetrimByline("map");
 
-    playingMap -> buildMap(load.at(0).str, transform(load.at(0).x, load.at(0).y));
+    playingMap -> buildMap(trim1.at(0).str, transform(trim1.at(0).x, trim1.at(0).y));
     player = playingMap -> getPlayer();
 
-    std::istringstream iss(load.at(1).str);
+    trim2 = io.filetrimByline("undo");
+
+    undo_data.reserve(5);
+
+    undo_data_form f;
+    int x, y;
+
+    for(int i = 1; i < trim2.size() - 1; i++){
+        std::istringstream issUndo(trim2.at(i).str);
+        issUndo >> x >> y >> f.is$moved;
+        f.dir.setXY(x, y);
+        undo_data.push_back(f);
+    }
+
+    player -> setUndo(undo_data);
+
+    std::istringstream iss(trim2.back().str);
 
     iss >> stage >> playTime;
-
-    startTimer();
-    update();
 }
 
 bool gameCore::showRanking(){
