@@ -244,6 +244,10 @@ bool gameCore::loadGame(){
 }
 
 bool gameCore::showRanking(){
+    system("clear");
+    fileio::showFile("src/data/rank.txt");
+    std::cin.ignore();
+    std::cin.get();
 }
 
 bool gameCore::showReadMe(){
