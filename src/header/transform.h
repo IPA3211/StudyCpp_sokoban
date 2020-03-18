@@ -23,7 +23,7 @@ public:
     void getXY(int &_x, int &_y);
 
     transform& operator=(const transform &other);
-    transform& operator+(const transform &other);
-    transform& operator-(const transform &other);
+    transform operator+(const transform &other);
+    transform operator-(const transform &other);
 
 };

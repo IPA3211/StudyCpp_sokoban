@@ -37,7 +37,7 @@ public:
 
     char getDataInfo(const transform &_position);
     
-    bool isCanSwap(const transform &index, const transform &direction);
+    bool isCanSwap(const transform &index, const transform &direction, bool is$moved = false);
     void swap(const transform &index, const transform &index2);
     void hardSwap(const transform &index, const transform &index2);
 

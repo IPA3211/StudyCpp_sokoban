@@ -17,30 +17,31 @@ void charactor::changePosition(const transform &_pos){
 }
 
 void charactor::move(const char &_input, map &m){
+    bool is$Moved = false;
     switch (_input)
     {
     case 'a':
-        if(m.isCanSwap(position, transform(0, -1))){
+        if(m.isCanSwap(position, transform(0, -1), is$Moved)){
             changePosition(position + transform(0, -1));
-            saveUndo(transform(0, -1));
+            saveUndo(transform(0, -1), is$Moved);
         }
         break;
     case 'w':
-        if(m.isCanSwap(position, transform(-1, 0))){
+        if(m.isCanSwap(position, transform(-1, 0), is$Moved)){
             changePosition(position + transform(-1, 0));
-            saveUndo(transform(-1, 0));
+            saveUndo(transform(-1, 0), is$Moved);
         }
         break;
     case 'd':
-        if(m.isCanSwap(position, transform(0, 1))){
+        if(m.isCanSwap(position, transform(0, 1), is$Moved)){
             changePosition(position + transform(0, 1));
-            saveUndo(transform(0, 1));
+            saveUndo(transform(0, 1), is$Moved);
         }
         break;
     case 's':
-        if(m.isCanSwap(position, transform(1, 0))){
+        if(m.isCanSwap(position, transform(1, 0), is$Moved)){
             changePosition(position + transform(1, 0));
-            saveUndo(transform(1, 0));
+            saveUndo(transform(1, 0), is$Moved);
         }
         break;
     
@@ -49,14 +50,17 @@ void charactor::move(const char &_input, map &m){
     }
 }
 
-void charactor::saveUndo(const transform &_dir){
+void charactor::saveUndo(const transform &_dir, const bool &_isMoved){
+    undo_data_form udf;
+    udf.dir = _dir;
+    udf.is$moved = _isMoved;
     if(undo_data.size() < 5){
-        undo_data.push_back(_dir);
+        undo_data.push_back(udf);
         std::cout << "s" << std::endl;
     }
     else{
         undo_data.erase(undo_data.begin());
-        undo_data.push_back(_dir);
+        undo_data.push_back(udf);
         std::cout << "ss" << std::endl;
     }
 
@@ -64,16 +68,18 @@ void charactor::saveUndo(const transform &_dir){
 
 void charactor::undo(map &m){
     if(undo_data.size() > 0){
+        transform temp = undo_data.back().dir;
 
-        if(m.isCanSwap(position, transform(0,0) - undo_data.back())){
-            changePosition(position - undo_data.back());
+        if(m.isCanSwap(position, transform(0,0) - temp)){
+            changePosition(position - temp);
         }
 
-        if(m.getDataInfo(position + undo_data.back()) == '$' || m.getDataInfo(position + undo_data.back()) == '$'+1){
-            m.isCanSwap(position - undo_data.back(), transform(0,0) - undo_data.back());
+        if(undo_data.back().is$moved){
+            m.isCanSwap(position + temp, transform(0,0) - temp);
+            std::cout << "is $ so swap" << std::endl;
         }
 
-        std::cout << undo_data.back().getX() << " " << undo_data.back().getY() <<std::endl;
+        std::cout << temp.getX() << " " << temp.getY() <<std::endl;
 
         undo_data.pop_back();
     }

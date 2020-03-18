@@ -216,7 +216,7 @@ bool gameCore::showReadMe(){
 }
 
 char gameCore::showGameStartUI() {
-    system("clear");
+    //system("clear");
     ChangeInputType(false);
 
     using std::cout;

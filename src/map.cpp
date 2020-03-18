@@ -109,7 +109,7 @@ char map::getDataInfo(const transform &_position){
     return map_data[_position.getX()][_position.getY()];
 }
 
-bool map::isCanSwap(const transform &_index, const transform &_direction){
+bool map::isCanSwap(const transform &_index, const transform &_direction, bool is$moved){
     transform index2 = _index;
 
     index2 = index2 + _direction;
@@ -120,6 +120,8 @@ bool map::isCanSwap(const transform &_index, const transform &_direction){
     const int x2 = index2.getX();
     const int y2 = index2.getY();
 
+    is$moved = false;
+    
     if(map_data[x1][y1] == '@' || map_data[x1][y1] == '@' + 1){
         if(map_data[x2][y2] == ' '){
             swap(_index, index2);
@@ -131,6 +133,7 @@ bool map::isCanSwap(const transform &_index, const transform &_direction){
         }
         else if(map_data[x2][y2] == '$' || map_data[x2][y2] == '$' + 1) {// $
             if(isCanSwap(index2, _direction)){
+                is$moved = true;
                 swap(_index, index2);
                 return true;
             }

@@ -31,13 +31,17 @@ transform& transform::operator=(const transform &other){
     setXY(other.x, other.y);
     return *this;
 }
-transform& transform::operator+(const transform &other){
-    x += other.x;
-    y += other.y;
-    return *this;
+transform transform::operator+(const transform &other){
+    transform ts = *this;
+    ts.x += other.x;
+    ts.y += other.y;
+
+    return ts;
 }
-transform& transform::operator-(const transform &other){
-    x -= other.x;
-    y -= other.y;
-    return *this;
+transform transform::operator-(const transform &other){
+    transform ts = *this;
+    ts.x -= other.x;
+    ts.y -= other.y;
+
+    return ts;
 }
