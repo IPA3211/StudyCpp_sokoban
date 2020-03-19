@@ -13,7 +13,7 @@ charactor::charactor(const transform &_pos){
 
 void charactor::changePosition(const transform &_pos){
     position = _pos;
-    std::cout << position.getX() << " " << position.getY() << std::endl;
+    //std::cout << position.getX() << " " << position.getY() << std::endl;
 }
 
 bool charactor::move(const char &_input, map &m){
@@ -58,12 +58,12 @@ void charactor::saveUndo(const transform &_dir, const bool &_isMoved){
     udf.is$moved = _isMoved;
     if(undo_data.size() < 5){
         undo_data.push_back(udf);
-        std::cout << "s" << std::endl;
+        //std::cout << "s" << std::endl;
     }
     else{
         undo_data.erase(undo_data.begin());
         undo_data.push_back(udf);
-        std::cout << "ss" << std::endl;
+        //std::cout << "ss" << std::endl;
     }
 
 }
@@ -85,12 +85,12 @@ void charactor::undo(map &m){
 
             if(undo_data.back().is$moved){
                 m.isCanSwap(position + temp, transform(0,0) - temp, b);
-                std::cout << "is $ so swap" << std::endl;
+                //std::cout << "is $ so swap" << std::endl;
             }
 
             changePosition(position - temp);
         }
-        std::cout << temp.getX() << " " << temp.getY() <<std::endl;
+       //std::cout << temp.getX() << " " << temp.getY() <<std::endl;
 
         undo_data.pop_back();
     }

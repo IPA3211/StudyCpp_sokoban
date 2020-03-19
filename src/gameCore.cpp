@@ -267,6 +267,7 @@ void gameCore::saveRanking(){
         idCheck = std::regex_replace(name, std::regex("[^0-9a-zA-Z가-힣]{1,10}"), "");
 
         if(idCheck.size() != 0){
+            system("clear");
             std::cout << "공백, 특수문자는 허용하지 않습니다. 다시 입력해 주세요" << std::endl;
         }
         else {
@@ -288,7 +289,7 @@ bool gameCore::showReadMe(){
 }
 
 char gameCore::showGameStartUI() {
-    //system("clear");
+    system("clear");
     ChangeInputType(false);
 
     using std::cout;
@@ -316,6 +317,7 @@ char gameCore::showGameStartUI() {
 
         if(!('1' <= in && '5' >= in)){
             temp = true;
+            system("clear");
             cout << "잘못된 입력입니다" << endl;
         }
     }
@@ -349,6 +351,7 @@ void gameCore::gameClear(){
 
         if(!('1' <= in && '2' >= in)){
             temp = true;
+            system("clear");
             std::cout << "잘못된 입력입니다" << std::endl;
         }
     }
@@ -388,6 +391,7 @@ char gameCore::showGamePauseUI(){
 
         if(!('1' <= in && '5' >= in)){
             temp = true;
+            system("clear");
             cout << "잘못된 입력입니다" << endl;
         }
     }
