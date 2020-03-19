@@ -3,6 +3,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <thread>
+#include <regex>
 
 #include "header/gameCore.h"
 #include "header/charactor.h"
@@ -58,13 +59,12 @@ bool gameCore::gameInput(){
     case 'd':
         if (player -> move(input, *playingMap)){
             if(playingMap -> clearCheck()){
-                if(stage < stages.size()){
+                if(stage < stages.size() - 1){
                     stage++;
                     loadStage(stage);
                 }
                 else{
-                    system("clear");
-                    std::cout << "clear !!" << std::endl;
+                    gameClear();
                     return false;
                 }
             }
@@ -250,6 +250,36 @@ bool gameCore::showRanking(){
     std::cin.get();
 }
 
+void gameCore::saveRanking(){
+    system("clear");
+
+    std::string name, idCheck;
+    
+    std::cout << "기록을 저장합니다" << std::endl;
+    std::cout << "이름을 입력해 주세요(특수문자 사용 불가)" << std::endl;
+
+    do
+    {
+        std::cin.ignore(32000, '\n');
+        std::cout << "입력 : ";
+        getline(std::cin, name);
+
+        idCheck = std::regex_replace(name, std::regex("[^0-9a-zA-Z가-힣]{1,10}"), "");
+
+        if(idCheck.size() != 0){
+            std::cout << "공백, 특수문자는 허용하지 않습니다. 다시 입력해 주세요" << std::endl;
+        }
+        else {
+            std::cout << name << idCheck;
+            break;
+        }
+
+    } while (true);
+
+    
+    
+}
+
 bool gameCore::showReadMe(){
     system("clear");
     fileio::showFile("src/data/help.txt");
@@ -292,6 +322,41 @@ char gameCore::showGameStartUI() {
     while(temp);
 
     return in;
+}
+
+void gameCore::gameClear(){
+    ChangeInputType(false);
+    stopTimer();
+
+    system("clear");
+
+    std::cout << "\tGAME CLEAR" << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "PLAYING TIME :" << playTime / 10 << "." << playTime % 10 << std::endl;
+    std::cout << "기록을 저장하시겠습니까?" << std::endl;
+
+    std::cout << "1. 네" << std::endl;
+    std::cout << "2. 아니요" << std::endl;
+
+    bool temp = false;
+    char in;
+    
+    do{
+        temp = false;
+        std::cout << "입력 : ";
+        std::cin >> in;
+
+        if(!('1' <= in && '2' >= in)){
+            temp = true;
+            std::cout << "잘못된 입력입니다" << std::endl;
+        }
+    }
+    while(temp);
+
+    if(in == '1'){
+        saveRanking();
+    }
 }
 
 char gameCore::showGamePauseUI(){

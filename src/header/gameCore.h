@@ -43,7 +43,9 @@ public:
     bool saveGame();
     bool loadGame();
     bool showRanking();
+    void saveRanking();
     bool showReadMe();
+    void gameClear();
 
     //GAME UIs
     char showGameStartUI();
