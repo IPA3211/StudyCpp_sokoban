@@ -250,7 +250,7 @@ bool gameCore::showRanking(){
     std::cin.get();
 }
 
-void gameCore::saveRanking(){
+void gameCore::saveRankingUI(){
     system("clear");
 
     std::string name, idCheck;
@@ -276,9 +276,28 @@ void gameCore::saveRanking(){
         }
 
     } while (true);
+    
+    saveRankingCore(name);
 
+}
+
+void gameCore::saveRankingCore(const std::string &_name){
+
+}
+
+std::vector<trimedStirng> gameCore::loadRankingData(){
+    fileio io("src/data/rank.txt",  mode::IN);
+    std::vector<trimedStirng> rank_data_raw, rank_data;
+    trimedStirng temp;
     
-    
+    rank_data_raw = io.filetrimByline("rank");
+
+    rank_data.reserve(rank_data_raw.size() + 1);
+
+    for(int i = 0; i < rank_data_raw.size(); i++){
+        std::istringstream iss(rank_data_raw.at(i).str);
+        
+    }
 }
 
 bool gameCore::showReadMe(){
@@ -358,7 +377,7 @@ void gameCore::gameClear(){
     while(temp);
 
     if(in == '1'){
-        saveRanking();
+        saveRankingUI();
     }
 }
 

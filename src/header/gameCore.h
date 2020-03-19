@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <thread>
+#include <string>
 #include "map.h"
 #include "charactor.h"
 #include "fileio.h"
@@ -43,7 +44,9 @@ public:
     bool saveGame();
     bool loadGame();
     bool showRanking();
-    void saveRanking();
+    void saveRankingUI();
+    void saveRankingCore(const std::string &_name);
+    std::vector<trimedStirng> loadRankingData();
     bool showReadMe();
     void gameClear();
 
