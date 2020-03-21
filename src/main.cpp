@@ -9,7 +9,7 @@ int main(void){
     
     gameCore g;
     
-    g.start();
+    while(g.start());
 
     return 0;
 }

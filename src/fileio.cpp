@@ -7,11 +7,11 @@
 
 fileio::fileio(char * _fileName, mode _type){
     file.open(_fileName);
-    if(file.is_open()){
-        std::cout<<"opened"<<std::endl;
-    }
-    else
-        std::cout<<"fail"<<std::endl;
+    // if(file.is_open()){
+    //     std::cout<<"opened"<<std::endl;
+    // }
+    // else
+    //     std::cout<<"fail"<<std::endl;
 }
 
 void fileio::showFile(char * _fileName){
@@ -65,7 +65,21 @@ bool fileio::saveGame(char * _fileName, const gameSaveDatas &data){
     return true;
 }
 
-std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
+bool fileio::saveRank(char * _fileName, const std::vector<trimedStirng> &data){
+    std::ofstream f;
+    
+    f.open(_fileName);
+
+    for(int i = 0; i < data.size(); i++){
+        f << "rank\n";
+        f << data.at(i).x;
+        f << data.at(i).str << std::endl;        
+    }
+
+    f << "end";
+}
+
+bool fileio::filetrimByline(const std::string &_ruler, std::vector<trimedStirng> &data){
     std::vector<trimedStirng> strings;
     trimedStirng temp;
 
@@ -99,11 +113,22 @@ std::vector<trimedStirng> fileio::filetrimByline(const std::string &_ruler){
     }
     else
     {
-        std::cout << "file open fail" << std::endl;
+        system("clear");
+        std::cout << "파일이 없거나 열 수 없습니다" << std::endl;
+
+        std::cin.ignore();
+        std::cin.get();
+
+        return false;
     }
     
-    return strings;
+    data = strings;
+    return true;
 
+}
+
+bool fileio::isOpend(){
+    return file.is_open();
 }
 
 

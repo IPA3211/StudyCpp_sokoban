@@ -35,8 +35,10 @@ public:
 
     static void showFile(char * _fileName);
     static bool saveGame(char * _fileName, const gameSaveDatas &data);
+    static bool saveRank(char * _fileName, const std::vector<trimedStirng> &data);
 
-    std::vector<trimedStirng> filetrimByline(const std::string &_ruler);
+    bool filetrimByline(const std::string &_ruler, std::vector<trimedStirng> &data);
+    bool isOpend();
     
 
     ~fileio();

@@ -13,9 +13,9 @@ private:
     map* playingMap;
     charactor* player = nullptr;
     std::thread* timer_th = nullptr;
-    std::thread::native_handle_type tt;
 
     bool isTimerStart = false;
+    bool gameContinueFlag = true;
     int stage, playTime;
     
 public:
@@ -32,8 +32,10 @@ public:
     void startTimer();
     void stopTimer();
 
+    static bool rankCompare(const trimedStirng &a, const trimedStirng &b);
+
     //GAME FLOWs
-    void start(); // game start
+    bool start(); // game start
     bool update();// loop while game play
 
     //GAME SYSTEMs
@@ -44,7 +46,6 @@ public:
     bool saveGame();
     bool loadGame();
     bool showRanking();
-    void saveRankingUI();
     void saveRankingCore(const std::string &_name);
     std::vector<trimedStirng> loadRankingData();
     bool showReadMe();
@@ -53,6 +54,7 @@ public:
     //GAME UIs
     char showGameStartUI();
     char showGamePauseUI();
+    void saveRankingUI();
 
     //CLASS UTILITYs
     void gameCoreFree();

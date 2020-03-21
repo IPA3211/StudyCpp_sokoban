@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <thread>
 #include <regex>
+#include <algorithm>
 
 #include "header/gameCore.h"
 #include "header/charactor.h"
@@ -12,10 +13,6 @@
 #include "header/map.h"
 
 gameCore::gameCore(){
-    fileio file("src/data/map.txt", mode::IN);
-
-    stages = file.filetrimByline("map");
-    
     stage = 0;
     playTime = 0;
 
@@ -65,6 +62,7 @@ bool gameCore::gameInput(){
                 }
                 else{
                     gameClear();
+                    gameContinueFlag = true;
                     return false;
                 }
             }
@@ -84,22 +82,28 @@ bool gameCore::gameInput(){
         while(flag){
             switch (showGamePauseUI())
             {
-            case '1':
+            case '1': // 계속하기
                 startTimer();
                 flag = false;
                 break;
-            case '2':
+            case '2': // 게임 저장
                 saveGame();
                 break;
-            case '3':
-                loadGame();
-                startTimer();
-                flag = false;
+            case '3': // 불러 오기
+                if(loadGame()){
+                    startTimer();
+                    flag = false;
+                }
                 break;
-            case '4':
+            case '4': // 설명
                 showReadMe();
                 break;
-            case '5':
+            case '5': // 메인으로
+                gameContinueFlag = true;
+                return false;
+                break;
+            case '6': // 종료
+                gameContinueFlag = false;
                 return false; // game out
                 break;
             
@@ -136,17 +140,27 @@ void gameCore::stopTimer(){
     isTimerStart = false;
 }
 
-void gameCore::start(){
+bool gameCore::rankCompare(const trimedStirng &a, const trimedStirng &b){
+    return a.x < b.x;
+}
+
+bool gameCore::start(){
+    gameCoreFree();
+    playingMap = new map();
+    
+    fileio file("src/data/map.txt", mode::IN);
+    file.filetrimByline("map", stages);
+
     while(true){
         switch (showGameStartUI())
         {
         case '1':
             startNewGame(false);
-            return;
+            return gameContinueFlag;
             break;
         case '2':
             startNewGame(true);
-            return;
+            return gameContinueFlag;
             break;
         case '3':
             showRanking();
@@ -155,7 +169,7 @@ void gameCore::start(){
             showReadMe();
             break;
         case '5':
-            return;
+            return false;
             break;
 
         default:
@@ -179,7 +193,8 @@ void gameCore::restrat(){
 void gameCore::startNewGame(const bool &isLoadGame){
     
     if(isLoadGame){
-        loadGame();
+        if(!loadGame())
+            return;
     }
     else{
         loadStage(0);
@@ -217,12 +232,16 @@ bool gameCore::loadGame(){
     fileio io("save",  mode::IN);
     std::vector<trimedStirng> trim1, trim2;
     std::vector<undo_data_form> undo_data;
-    trim1 = io.filetrimByline("map");
+
+    if(!io.filetrimByline("map", trim1))
+        return false;
+        
+    if(!io.filetrimByline("undo", trim2))
+        return false;
 
     playingMap -> buildMap(trim1.at(0).str, transform(trim1.at(0).x, trim1.at(0).y));
     player = playingMap -> getPlayer();
 
-    trim2 = io.filetrimByline("undo");
 
     undo_data.reserve(5);
 
@@ -241,11 +260,26 @@ bool gameCore::loadGame(){
     std::istringstream iss(trim2.back().str);
 
     iss >> stage >> playTime;
+    return true;
 }
 
 bool gameCore::showRanking(){
     system("clear");
-    fileio::showFile("src/data/rank.txt");
+    std::vector<trimedStirng> rank_data;
+    
+    rank_data = loadRankingData();
+
+    if(rank_data.size() == 0){
+        return false;
+    }
+    
+    std::cout << "\t순위\n" << std::endl;
+    std::cout << "순위"<< "\t" << "이름" << "\t" << "기록" << std::endl;;
+    for(int i = 0; i < rank_data.size(); i++){
+        std::cout << i + 1 << "\t" << rank_data.at(i).str << "\t" << 
+        rank_data.at(i).x /10 << "." << rank_data.at(i).x%10 << "s" << std::endl;
+    }
+
     std::cin.ignore();
     std::cin.get();
 }
@@ -266,12 +300,16 @@ void gameCore::saveRankingUI(){
 
         idCheck = std::regex_replace(name, std::regex("[^0-9a-zA-Z가-힣]{1,10}"), "");
 
-        if(idCheck.size() != 0){
+        if(idCheck.compare(name) != 0){
             system("clear");
-            std::cout << "공백, 특수문자는 허용하지 않습니다. 다시 입력해 주세요" << std::endl;
+            std::cout <<" 공백, 특수문자는 허용하지 않습니다. 다시 입력해 주세요" << std::endl;
+        }
+        else if(name.at(0) >= '0' && name.at(0) <= '9') {
+            system("clear");
+            std::cout << "첫 글자로 숫자를 사용할 수 없습니다." << std::endl;
         }
         else {
-            std::cout << name << idCheck;
+            //std::cout << name << idCheck;
             break;
         }
 
@@ -281,23 +319,43 @@ void gameCore::saveRankingUI(){
 
 }
 
-void gameCore::saveRankingCore(const std::string &_name){
 
+
+void gameCore::saveRankingCore(const std::string &_name){
+    std::vector<trimedStirng> rank_data;
+    trimedStirng temp;
+
+    temp.x = playTime;
+    temp.str = _name;
+
+    rank_data = loadRankingData();
+
+    rank_data.push_back(temp);
+
+    std::sort(rank_data.begin(), rank_data.end(), rankCompare);
+
+    fileio::saveRank("src/data/rank.txt", rank_data);
+    
 }
 
 std::vector<trimedStirng> gameCore::loadRankingData(){
     fileio io("src/data/rank.txt",  mode::IN);
     std::vector<trimedStirng> rank_data_raw, rank_data;
     trimedStirng temp;
-    
-    rank_data_raw = io.filetrimByline("rank");
+
+    if(!io.filetrimByline("rank", rank_data_raw))
+        return rank_data;
 
     rank_data.reserve(rank_data_raw.size() + 1);
 
     for(int i = 0; i < rank_data_raw.size(); i++){
         std::istringstream iss(rank_data_raw.at(i).str);
-        
+        iss >> temp.x;
+        getline(iss, temp.str);
+        rank_data.push_back(temp);
     }
+
+    return rank_data;
 }
 
 bool gameCore::showReadMe(){
@@ -378,6 +436,12 @@ void gameCore::gameClear(){
 
     if(in == '1'){
         saveRankingUI();
+        system("clear");
+
+        std::cout << "저장이 완료되었습니다." << std::endl;
+        std::cout << "메인 화면으로 이동합니다" << std::endl;
+        std::cin.ignore();
+        std::cin.get();
     }
 }
 
@@ -399,7 +463,8 @@ char gameCore::showGamePauseUI(){
     cout << "2. 저장" << endl;
     cout << "3. 불러오기" << endl;
     cout << "4. 설명" << endl;
-    cout << "5. 종료" << endl;
+    cout << "5. 메인화면" << endl;
+    cout << "6. 종료" << endl;
     
     bool temp = false;
     
@@ -408,7 +473,7 @@ char gameCore::showGamePauseUI(){
         cout << "입력 : ";
         cin >> in;
 
-        if(!('1' <= in && '5' >= in)){
+        if(!('1' <= in && '6' >= in)){
             temp = true;
             system("clear");
             cout << "잘못된 입력입니다" << endl;
@@ -418,15 +483,25 @@ char gameCore::showGamePauseUI(){
 }
 
 void gameCore::gameCoreFree(){
-    delete playingMap;
-    delete player;
-    delete timer_th;
+    if(playingMap != nullptr)
+        delete playingMap;
+    if(player != nullptr);
+        delete player;
+    if(timer_th != nullptr);
+        delete timer_th;
 
     playingMap = nullptr;
     player = nullptr;
     timer_th = nullptr;
 
-    stages.clear();
+    isTimerStart = false;
+    gameContinueFlag = true;
+
+    stage = 0;
+    playTime = 0;
+
+    if(stages.size() != 0)
+        stages.clear();
 }
 
 gameCore::~gameCore(){
