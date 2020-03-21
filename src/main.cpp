@@ -7,9 +7,12 @@
 
 int main(void){
     
-    gameCore g;
+    gameCore *g = new gameCore();
     
-    while(g.start());
+    while(g->start()){
+        delete g;
+        g = new gameCore();
+    }
 
     return 0;
 }

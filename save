@@ -4,15 +4,11 @@ map
 #              #
 #              #
 #       $$     #
-#        @     #
 #              #
+#    @         #
 #              #
 ################
 map
-undo
-0 1 0
-undo
-0 1 0
 undo
 -1 0 0
 undo
@@ -20,5 +16,7 @@ undo
 undo
 0 1 0
 undo
-0 28
+0 1 0
+undo
+0 43
 end

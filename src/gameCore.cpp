@@ -13,10 +13,16 @@
 #include "header/map.h"
 
 gameCore::gameCore(){
+
+    playingMap = new map();
+    
+    fileio file("src/data/map.txt", mode::IN);
+    file.filetrimByline("map", stages);
+
     stage = 0;
     playTime = 0;
 
-    playingMap = new map();
+    file.~fileio();
 }
 
 void gameCore::ChangeInputType(bool type){
@@ -145,12 +151,6 @@ bool gameCore::rankCompare(const trimedStirng &a, const trimedStirng &b){
 }
 
 bool gameCore::start(){
-    gameCoreFree();
-    playingMap = new map();
-    
-    fileio file("src/data/map.txt", mode::IN);
-    file.filetrimByline("map", stages);
-
     while(true){
         switch (showGameStartUI())
         {
@@ -164,9 +164,11 @@ bool gameCore::start(){
             break;
         case '3':
             showRanking();
+            return true;
             break;
         case '4':
             showReadMe();
+            return true;
             break;
         case '5':
             return false;
@@ -208,8 +210,9 @@ void gameCore::loadStage(const int &_stage){
     stage = _stage;
 
     playingMap -> buildMap(stages.at(stage).str, transform(stages.at(stage).x, stages.at(stage).y));
-    playingMap -> showMap();
     player = playingMap -> getPlayer();
+
+    playingMap -> showMap();
 }
 
 bool gameCore::saveGame(){
@@ -239,6 +242,13 @@ bool gameCore::loadGame(){
     if(!io.filetrimByline("undo", trim2))
         return false;
 
+    if(trim1.size() == 0){
+        std::cout << "SAVE 데이터가 없습니다" << std::endl;
+        
+    }
+
+    std::cout <<trim1.size();
+
     playingMap -> buildMap(trim1.at(0).str, transform(trim1.at(0).x, trim1.at(0).y));
     player = playingMap -> getPlayer();
 
@@ -260,6 +270,9 @@ bool gameCore::loadGame(){
     std::istringstream iss(trim2.back().str);
 
     iss >> stage >> playTime;
+
+    io.~fileio();
+
     return true;
 }
 
@@ -270,6 +283,13 @@ bool gameCore::showRanking(){
     rank_data = loadRankingData();
 
     if(rank_data.size() == 0){
+        system("clear");
+
+        std::cout<< "RANK 데이터가 없습니다" << std::endl;
+
+        std::cin.ignore();
+        std::cin.get();
+
         return false;
     }
     
@@ -328,13 +348,13 @@ void gameCore::saveRankingCore(const std::string &_name){
     temp.x = playTime;
     temp.str = _name;
 
-    rank_data = loadRankingData();
+    //rank_data = loadRankingData();
 
     rank_data.push_back(temp);
 
     std::sort(rank_data.begin(), rank_data.end(), rankCompare);
 
-    fileio::saveRank("src/data/rank.txt", rank_data);
+    //fileio::saveRank("src/data/rank.txt", rank_data);
     
 }
 
@@ -355,6 +375,7 @@ std::vector<trimedStirng> gameCore::loadRankingData(){
         rank_data.push_back(temp);
     }
 
+    io.~fileio();
     return rank_data;
 }
 

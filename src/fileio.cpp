@@ -77,6 +77,7 @@ bool fileio::saveRank(char * _fileName, const std::vector<trimedStirng> &data){
     }
 
     f << "end";
+    f.close();
 }
 
 bool fileio::filetrimByline(const std::string &_ruler, std::vector<trimedStirng> &data){
