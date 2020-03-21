@@ -18,7 +18,7 @@ class map
 private:
     data map_data = nullptr;
     transform map_size;
-    charactor *player = nullptr;
+    transform player_pos;
 
 public:
     map();

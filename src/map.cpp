@@ -28,7 +28,8 @@ map::map(const std::string &_data, const transform &_ms){
         }
         else{
             if(temp == '@'){
-                player = new charactor(transform(row, col));
+
+                player_pos = transform(row, col);
             }
             map_data[row][col] = temp;
             col ++;
@@ -70,7 +71,7 @@ void map::buildMap(const std::string &str, const transform &_ms){
         }
         else{
             if(temp == '@'){
-                player = new charactor(transform(row, col));
+                player_pos = transform(row, col);
             }
             map_data[row][col] = temp;
             col ++;
@@ -255,7 +256,7 @@ bool map::clearCheck(){
 }
 
 charactor * map::getPlayer(){
-    return player;
+    return new charactor(player_pos);
 }
 
 void map::freeMapData(){
@@ -268,9 +269,6 @@ void map::freeMapData(){
     map_data = nullptr;
 
     map_size = transform(0, 0);
-
-    delete player;
-    player = nullptr;
 }
 
 map::~map(){
