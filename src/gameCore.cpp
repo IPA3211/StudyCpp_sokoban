@@ -310,14 +310,17 @@ void gameCore::saveRankingUI(){
     std::string name, idCheck;
     
     std::cout << "기록을 저장합니다" << std::endl;
-    std::cout << "이름을 입력해 주세요(특수문자 사용 불가)" << std::endl;
 
     do
     {
-        std::cin.ignore(32000, '\n');
+        std::cout << "이름을 입력해 주세요(특수문자 사용 불가)" << std::endl;
         std::cout << "입력 : ";
         getline(std::cin, name);
 
+        if(name.size() == 0){
+            system("clear");
+            continue;    
+        }
         idCheck = std::regex_replace(name, std::regex("[^0-9a-zA-Z가-힣]{1,10}"), "");
 
         if(idCheck.compare(name) != 0){
