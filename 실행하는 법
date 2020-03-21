@@ -2,3 +2,248 @@
 g++ $(find ~/workspace/Study/src -name *.cpp) -o ~/workspace/Study/bin//main -g -std=c++17 -lm && ~/workspace/Study/bin//main
 
 g++ $(find ./src -name *.cpp) -pthread -o ./bin//main -g -std=c++17 -lm && ./bin//main
+
+4. 설명
+5. 메인화면
+6. 종료
+입력 : 5
+
+
+==1687== Invalid read of size 8
+==1687==    at 0x1110A7: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:677)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e30 is 16 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid read of size 8
+==1687==    at 0x1110AF: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:677)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e28 is 8 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid read of size 8
+==1687==    at 0x11103A: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:333)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e38 is 24 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid read of size 8
+==1687==    at 0x111042: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:333)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e28 is 8 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid read of size 8
+==1687==    at 0x111067: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:332)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e28 is 8 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid free() / delete / delete[] / realloc()
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x115035: __gnu_cxx::new_allocator<undo_data_form>::deallocate(undo
+_data_form*, unsigned long) (new_allocator.h:128)
+==1687==    by 0x1132ED: std::allocator_traits<std::allocator<undo_data_form> >::d
+eallocate(std::allocator<undo_data_form>&, undo_data_form*, unsigned long) (alloc_
+traits.h:470)
+==1687==    by 0x111E93: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::_M_deallocate(undo_data_form*, unsigned long) (stl_vector.h:351)
+==1687==    by 0x111078: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:332)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e28 is 8 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x13FEA8: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x13F0DF: map::buildMap(std::__cxx11::basic_string<char, std::char_
+traits<char>, std::allocator<char> > const&, transform const&) (map.cpp:73)
+==1687==    by 0x10E282: gameCore::loadStage(int const&) (gameCore.cpp:212)
+==1687==    by 0x10E1A2: gameCore::startNewGame(bool const&) (gameCore.cpp:202)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==    by 0x13EAFC: main (main.cpp:12)
+==1687==
+==1687== Invalid free() / delete / delete[] / realloc()
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x115035: __gnu_cxx::new_allocator<undo_data_form>::deallocate(undo
+_data_form*, unsigned long) (new_allocator.h:128)
+==1687==    by 0x1132ED: std::allocator_traits<std::allocator<undo_data_form> >::d
+eallocate(std::allocator<undo_data_form>&, undo_data_form*, unsigned long) (alloc_
+traits.h:470)
+==1687==    by 0x111E93: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::_M_deallocate(undo_data_form*, unsigned long) (stl_vector.h:351)
+==1687==    by 0x111078: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:332)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x10FA8C: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df8870 is 0 bytes inside a block of size 48 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x115035: __gnu_cxx::new_allocator<undo_data_form>::deallocate(undo
+_data_form*, unsigned long) (new_allocator.h:128)
+==1687==    by 0x1132ED: std::allocator_traits<std::allocator<undo_data_form> >::d
+eallocate(std::allocator<undo_data_form>&, undo_data_form*, unsigned long) (alloc_
+traits.h:470)
+==1687==    by 0x111E93: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::_M_deallocate(undo_data_form*, unsigned long) (stl_vector.h:351)
+==1687==    by 0x111078: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::~_Vector_base() (stl_vector.h:332)
+==1687==    by 0x1110C8: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::~vector() (stl_vector.h:680)
+==1687==    by 0x140B3D: charactor::~charactor() (charactor.cpp:99)
+==1687==    by 0x13FE9B: map::freeMapData() (map.cpp:272)
+==1687==    by 0x13FF07: map::~map() (map.cpp:277)
+==1687==    by 0x10FA6A: gameCore::gameCoreFree() (gameCore.cpp:508)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Block was alloc'd at
+==1687==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgprel
+oad_memcheck-amd64-linux.so)
+==1687==    by 0x1152DA: __gnu_cxx::new_allocator<undo_data_form>::allocate(unsign
+ed long, void const*) (new_allocator.h:114)
+==1687==    by 0x113604: std::allocator_traits<std::allocator<undo_data_form> >::a
+llocate(std::allocator<undo_data_form>&, unsigned long) (alloc_traits.h:444)
+==1687==    by 0x1122DB: std::_Vector_base<undo_data_form, std::allocator<undo_dat
+a_form> >::_M_allocate(unsigned long) (stl_vector.h:343)
+==1687==    by 0x112404: void std::vector<undo_data_form, std::allocator<undo_data
+_form> >::_M_realloc_insert<undo_data_form const&>(__gnu_cxx::__normal_iterator<un
+do_data_form*, std::vector<undo_data_form, std::allocator<undo_data_form> > >, und
+o_data_form const&) (vector.tcc:440)
+==1687==    by 0x1115F7: std::vector<undo_data_form, std::allocator<undo_data_form
+> >::push_back(undo_data_form const&) (stl_vector.h:1195)
+==1687==    by 0x1407D0: charactor::saveUndo(transform const&, bool const&) (chara
+ctor.cpp:60)
+==1687==    by 0x14036B: charactor::move(char const&, map&) (charactor.cpp:32)
+==1687==    by 0x10DD37: gameCore::gameInput() (gameCore.cpp:63)
+==1687==    by 0x10E041: gameCore::update() (gameCore.cpp:187)
+==1687==    by 0x10E1BA: gameCore::startNewGame(bool const&) (gameCore.cpp:206)
+==1687==    by 0x10DFA8: gameCore::start() (gameCore.cpp:158)
+==1687==
+==1687== Invalid free() / delete / delete[] / realloc()
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+==1687==    by 0x10FA99: gameCore::gameCoreFree() (gameCore.cpp:510)
+==1687==    by 0x10FB47: gameCore::~gameCore() (gameCore.cpp:529)
+==1687==    by 0x13EB11: main (main.cpp:13)
+==1687==  Address 0x5df7e20 is 0 bytes inside a block of size 32 free'd
+==1687==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_m
+emcheck-amd64-linux.so)
+SOKOBAN
